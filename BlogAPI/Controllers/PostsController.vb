@@ -10,48 +10,11 @@ Namespace Controllers
     Public Class PostsController
         Inherits ApiController
 
-        Dim saconstring As String = " "
+        Dim saconstring As String = "Data Source=.\INSTANCE;Initial Catalog=DATABASE;Persist Security Info=True;User ID=sa; Password=PASSWORD"
         Dim sacon As New SqlClient.SqlConnection(saconstring)
         Dim BazaCon As New SqlClient.SqlConnection
 
-
-        ' GET: api/Posts
-        Public Function GetValues() As String
-            BazaCon.ConnectionString = saconstring
-            Dim tblPost As DataTable = GetTable(BazaCon, "exec dbo.GetBlogPost '" & CreateSlug("augmented-reality-ios-application") & "'")
-
-            Dim JSONresult As String = ""
-            JSONresult = JsonConvert.SerializeObject(tblPost)
-            Return JSONresult
-        End Function
-
-        ' GET: api/Posts/5
-        Public Function GetValue(ByVal title As String) As String
-            BazaCon.ConnectionString = saconstring
-            Dim tblPost As DataTable = GetTable(BazaCon, "exec dbo.GetBlogPost '" & CreateSlug(title) & "'")
-
-            Dim JSONresult As String = ""
-            JSONresult = JsonConvert.SerializeObject(tblPost)
-            Return JSONresult
-        End Function
-
-        ' POST: api/Posts
-        Public Sub PostValue(<FromBody()> ByVal value As String)
-            'test
-        End Sub
-
-        ' PUT: api/Posts/5
-        Public Sub PutValue(ByVal id As Integer, <FromBody()> ByVal value As String)
-
-        End Sub
-
-        ' DELETE: api/Posts/5
-        Public Sub DeleteValue(ByVal id As Integer)
-
-        End Sub
-
-
-        <Route("api/Posts/{title}/post")>
+        <Route("api/Posts/post/{title}")>
         <ResponseType(GetType(String))>
         Public Function GetBlogPost(ByVal title As String)
             BazaCon.ConnectionString = saconstring
@@ -63,9 +26,9 @@ Namespace Controllers
         End Function
 
 
-        <Route("api/Posts/{tag}/posts")>
+        <Route("api/Posts/posts/{tag?}")>
         <ResponseType(GetType(String))>
-        Public Function GetBlogPosts(ByVal tag As String)
+        Public Function GetBlogPosts(Optional ByVal tag As String = "")
             BazaCon.ConnectionString = saconstring
             Dim tblPosts As DataTable = GetTable(BazaCon, "exec dbo.GetBlogPosts '" & CreateSlug(tag) & "'")
             Return Request.CreateResponse(HttpStatusCode.OK, tblPosts)
@@ -147,7 +110,7 @@ Namespace Controllers
                 query = query.Replace("[body]", body)
             End If
 
-            query = query.Replace("[updateAt]", ConvertToDate(DateTime.Now))
+            query = query.Replace("[updateAt]", ConvertToDate(DateTime.Now,,, True))
 
             query = query.Replace("[slug_old]", CreateSlug(title_old))
 
@@ -158,8 +121,7 @@ Namespace Controllers
                 Return "NOTHING UPDATED"
             End If
 
-            'http://localhost:57891/api/Posts/update?title_old=1&body=bodytest
-            'http://localhost:57891/api/Posts/update?title_old=1&body=bodytest
+
         End Function
 
 

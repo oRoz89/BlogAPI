@@ -14,20 +14,20 @@ CREATE TABLE [dbo].[BlogPosts](
 	[AutoBr] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
+
 GO
 
 
  
- 	 	CREATE PROCEDURE [dbo].[GetBlogPosts]
+ 	CREATE PROCEDURE [dbo].[GetBlogPosts]
 	( @tag nvarchar			)
 	 AS
 	SELECT slug, title, description, body, tagList, createdAt, updatedAt 
 	FROM dbo.BlogPosts 
 	WHERE (tagList LIKE  '%' + @tag + '%') 
+	ORDER BY createdAt
 
-
-
-
+	GO
 
 	CREATE PROCEDURE [dbo].[GetBlogPost]
 	( @slug nvarchar(555))
@@ -36,9 +36,23 @@ GO
 	FROM dbo.BlogPosts 
 	WHERE (slug =  @slug )
 
-
+	GO
 
 	CREATE PROCEDURE [dbo].[GetTagList]
 	 AS
 	SELECT DISTINCT tagList 
 	FROM dbo.BlogPosts 
+
+	GO
+
+SET IDENTITY_INSERT [dbo].[BlogPosts] ON 
+
+INSERT [dbo].[BlogPosts] ([AutoBr], [slug], [title], [description], [body], [tagList], [createdAt], [updatedAt]) VALUES (1, N'augmented-reality-ios-application', N'Augmented Reality iOS Application', N'Rubicon Software Development and Gazzda furniture are proud to launch an augmented reality app.', N'he app is simple to use, and will help you decide on your best furniture fit.', N'iOS;AR;trends', CAST(N'2018-05-18T05:22:56.637' AS DateTime), CAST(N'2018-05-18T05:48:35.823' AS DateTime))
+INSERT [dbo].[BlogPosts] ([AutoBr], [slug], [title], [description], [body], [tagList], [createdAt], [updatedAt]) VALUES (4, N'augmented-reality-ios-application-2', N'Augmented Reality iOS Application 2', N'2. Rubicon Software Development and Gazzda furniture are proud to launch an augmented reality app.', N'2. he app is simple to use, and will help you decide on your best furniture fit.', N'iOS;AR;inovation', CAST(N'2018-05-18T05:22:56.637' AS DateTime), CAST(N'2018-05-18T05:48:35.823' AS DateTime))
+INSERT [dbo].[BlogPosts] ([AutoBr], [slug], [title], [description], [body], [tagList], [createdAt], [updatedAt]) VALUES (5, N'augmented-reality-ios-application-3', N'Augmented Reality iOS Application 3', N'3. Rubicon Software Development and Gazzda furniture are proud to launch an augmented reality app.', N'3. he app is simple to use, and will help you decide on your best furniture fit.', N'2018;Android;trends', CAST(N'2018-05-18T05:22:56.637' AS DateTime), CAST(N'2018-05-18T05:48:35.823' AS DateTime))
+INSERT [dbo].[BlogPosts] ([AutoBr], [slug], [title], [description], [body], [tagList], [createdAt], [updatedAt]) VALUES (7, N'blog-post-1', N'Blog post 1', N'description1', N'Post about movies', N'Android;2016', CAST(N'2018-11-04T00:00:08.000' AS DateTime), CAST(N'2018-11-04T00:00:08.000' AS DateTime))
+INSERT [dbo].[BlogPosts] ([AutoBr], [slug], [title], [description], [body], [tagList], [createdAt], [updatedAt]) VALUES (8, N'blog-post-2', N'Blog post 2', N'description1', N'Post about movies', N'AR', CAST(N'2018-11-04T00:01:46.000' AS DateTime), CAST(N'2018-11-04T00:01:46.000' AS DateTime))
+INSERT [dbo].[BlogPosts] ([AutoBr], [slug], [title], [description], [body], [tagList], [createdAt], [updatedAt]) VALUES (9, N'blog-post-33', N'Blog post 33', N'description blog post 3', N'Post about movies', N'AR', CAST(N'2018-11-04T00:03:02.000' AS DateTime), CAST(N'2018-11-04T00:00:00.000' AS DateTime))
+INSERT [dbo].[BlogPosts] ([AutoBr], [slug], [title], [description], [body], [tagList], [createdAt], [updatedAt]) VALUES (10, N'title-11', N'title 11', N'description 11', N'bodytest', N'', CAST(N'2018-11-04T21:05:57.000' AS DateTime), CAST(N'2018-11-04T21:09:23.000' AS DateTime))
+
+SET IDENTITY_INSERT [dbo].[BlogPosts] OFF
