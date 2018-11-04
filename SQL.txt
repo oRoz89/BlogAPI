@@ -1,0 +1,44 @@
+
+CREATE TABLE [dbo].[BlogPosts](
+	[AutoBr] [bigint] IDENTITY(1,1) NOT NULL,
+	[slug] [nvarchar](max) NOT NULL,
+	[title] [nvarchar] (555) NOT NULL,
+	[description] [nvarchar](555) NULL,
+	[body] [nvarchar](555) NULL,
+	[tagList] [nvarchar](555) NULL,
+
+	 [createdAt] [datetime] NULL,
+	 [updatedAt] [datetime] NULL,
+ CONSTRAINT [PK_BlogPosts] PRIMARY KEY CLUSTERED 
+(
+	[AutoBr] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+ 
+ 	 	CREATE PROCEDURE [dbo].[GetBlogPosts]
+	( @tag nvarchar			)
+	 AS
+	SELECT slug, title, description, body, tagList, createdAt, updatedAt 
+	FROM dbo.BlogPosts 
+	WHERE (tagList LIKE  '%' + @tag + '%') 
+
+
+
+
+
+	CREATE PROCEDURE [dbo].[GetBlogPost]
+	( @slug nvarchar(555))
+	 AS
+	SELECT slug, title, description, body, tagList, createdAt, updatedAt 
+	FROM dbo.BlogPosts 
+	WHERE (slug =  @slug )
+
+
+
+	CREATE PROCEDURE [dbo].[GetTagList]
+	 AS
+	SELECT DISTINCT tagList 
+	FROM dbo.BlogPosts 
